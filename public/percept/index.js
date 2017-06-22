@@ -22,12 +22,25 @@ export class Percept{
   }
 
   /**
+   * Inner helper method to implement experiment launch from params received from the server,
+   * whether it's from a continued or a new participation
+   * @param {*} resp 
+   */
+  _handleStartResponse(resp){
+    // first, record the _id of the participation we are working on
+    privates.participationId = resp._id;
+    
+  }
+
+
+  /**
    * Single method to fetch a timeline, register a participation, and start jsPsych in a single call.
    * 
    * @param {object}  opts
    * @param {string}  opts.label
    * @param {string}  opts.display_element
-   * @param {boolean} opts.local
+   * @param {boolean} opts.local            Flag to indicate you wish to run the experiment without any interaction with the server. Data will be avaible to directly donwload and save to the user's computer
+   * @param {_id}     opts.continue         The _id number of an existing and previous participation that you wish to append data to.
    */
   doExperiment(opts){
     var app = this.app;
@@ -54,23 +67,24 @@ export class Percept{
     }
 
     function start(app){
-      app.service('participations').create({experiment: opts.label})
-      .catch( err => {
-        alert(err); //just echo the error for now
-      })
-      .then(resp => {
 
-        //ok, a new participation was created, and we got back its _id for storing our data in it later, and the timeline
-        //first, remember this _id
+      var service = app.service('participations');
 
-        privates.participation = resp._id;
-
-        jsPsych.init({
-          timeline : resp.timeline,
-          display_element: opts.display_element
-        });
-      });
+      //if this is a new participation, we need to call the CREATE endpoint, otherwise, we need to call the GET endpoint
+      if(typeof opts.continue === "undefined"){
+        service.create({experiment: opts.label})
+        .catch( err => {
+          alert(err);         //TODO: handle errors on participation creation
+        })
+        .then(_handleStartResponse)
+      }
+      else{
+        service.get(opts.continue)
+        .cath( err=> {
+          alert(err);
+        })
+        .then(_handleStartResponse)
+      }
     }
   }
-
 }

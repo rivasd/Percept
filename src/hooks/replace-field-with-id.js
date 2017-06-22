@@ -23,7 +23,7 @@ module.exports = function (options = {uniqueField:'email', targetModel:'users', 
             reject(err);
           }
           if(!user){
-            reject(new Error("No '"+ options.targetModel + "' instance found matching "+ options.replacedQueryField+" = "+hook.data[options.uniqueField]));
+            reject(new Error("No '"+ options.targetModel + "' instance found matching "+ options.uniqueField+" = "+hook.data[options.replacedQueryField]));
           }
           else{
             hook.data[options.targetField] = user._id;

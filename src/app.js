@@ -4,7 +4,7 @@ const compress = require('compression');
 const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-
+const swagger = require('feathers-swagger');
 
 //our custom things
 const auth = require('feathers-authentication');
@@ -46,6 +46,14 @@ app.use('/static', feathers.static(app.get('public')));
 app.configure(hooks());
 app.configure(mongodb);
 app.configure(rest());
+app.configure(swagger({
+    docsPath: '/docs',
+    uiIndex: true,
+    info: {
+      title: 'A test',
+      description: 'A description'
+    }
+}));
 app.configure(socketio());
 
 app.configure(authentication);

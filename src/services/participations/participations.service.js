@@ -15,6 +15,31 @@ module.exports = function () {
     paginate
   };
 
+  var participationService = createService(options);
+
+  //attaching the documentation
+  participationService.docs = {
+    description: 'A service to send and receive messages',
+    definitions: {
+      messages: {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The message text"
+          },
+          "useId": {
+            "type": "string",
+            "description": "The id of the user that sent the message"
+          }
+        }
+      }
+    }
+  };
+
   // Initialize our service with any options it requires
   app.use('/participations', createService(options));
 

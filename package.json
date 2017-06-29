@@ -50,6 +50,7 @@
     "feathers-mongoose": "^5.1.0",
     "feathers-rest": "^1.7.2",
     "feathers-socketio": "^2.0.0",
+    "feathers-swagger": "^0.5.0",
     "helmet": "^3.6.1",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",

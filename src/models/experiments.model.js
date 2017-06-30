@@ -29,7 +29,14 @@ module.exports = function (app) {
     extraParams : { type: String }
   });
 
-  //adding an index on the "researchers" array so that we can quickly find experiments by researcher name
+  //making sure the researchers array has at least one element on creation
+  experiments.pre("save", function(next){
+    var test = "test";
+    if(this._doc.researchers.length === 0){
+      this._doc.researchers.push(this._doc.leadResearcher);
+    }
+    next();
+  });
 
   return mongooseClient.model('experiments', experiments);
 };

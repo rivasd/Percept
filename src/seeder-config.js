@@ -7,14 +7,22 @@ module.exports = {
   services: [
     {
       path: 'users',
-      params:{
+      template:{
+        name: "Testy McTesterson",
         "email": "dev@dev.com",
         "username": "dev",
         "password": "password"
       },
-      template:{
-        name: "Testy McTesterson"
-      }
+      callback(user, seed){
+        //give our single user an experiment
+        return seed({
+          path: 'experiments',
+          template:{
+            label: "testexp",
+            leadResearcher : user._id.toString()
+          },
+        })
+      } 
     }
   ]
 }

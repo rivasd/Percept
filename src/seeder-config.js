@@ -11,7 +11,11 @@ module.exports = {
         name: "Testy McTesterson",
         "email": "dev@dev.com",
         "username": "dev",
-        "password": "password"
+        "password": "password",
+        "_id":"5956a361a0be8b18a07c2a4c"
+      },
+      params:{
+        provider: undefined
       },
       callback(user, seed){
         //give our single user an experiment

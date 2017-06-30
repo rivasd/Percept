@@ -11,6 +11,8 @@ const auth = require('feathers-authentication');
 const routes = require('../routes');
 
 const feathers = require('feathers');
+const seeder = require('feathers-seeder');
+const seederConfig = require('./seeder-config');
 const configuration = require('feathers-configuration');
 const hooks = require('feathers-hooks');
 const rest = require('feathers-rest');
@@ -25,6 +27,7 @@ const authentication = require('./authentication');
 const mongodb = require('./mongodb');
 
 const app = feathers();
+app.configure(seeder(seederConfig));
 
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));

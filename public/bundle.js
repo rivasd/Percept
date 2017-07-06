@@ -4604,6 +4604,27 @@ class Percept {
   }
 
   /**
+   * Helper function to get info about current browser. Happily stolen from: https://stackoverflow.com/a/5918791
+   */
+  _getBrowserInfo() {
+
+    var ua = navigator.userAgent,
+        tem,
+        M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if (/trident/i.test(M[1])) {
+      tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+      return 'IE ' + (tem[1] || '');
+    }
+    if (M[1] === 'Chrome') {
+      tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+      if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+    if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+    return M.join(' ');
+  }
+
+  /**
    * Generates an appropriate handler for jsPsych.init()'s on_data_update parameter to save data locally as the experiment progresses
    * depending on the options, it can either use the socketio connetion to continuously update, or simple keep a localStorage key up-to-date
    * @param {*} opts 
@@ -4655,7 +4676,7 @@ class Percept {
       //we need to make an API call to the /participations PATCH endpoint
       //we are confident that the endpoint will not treat our request
       return function (data) {
-        self.app.service('participations').patch(privates.participationId, { $push: { 'data': data.values() } }).catch(err => {
+        self.app.service('participations').patch(privates.participationId, { $push: { 'data': { data: data.values(), browser: self._getBrowserInfo() } } }).catch(err => {
           alert(err); //TODO: handle errors
         }).then(resp => {
           //if all goes well, we should probable erase the localStorage cache, we dont need it anymore

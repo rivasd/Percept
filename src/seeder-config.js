@@ -23,8 +23,13 @@ module.exports = {
           path: 'experiments',
           template:{
             label: "testexp",
-            leadResearcher : user._id.toString()
+            leadResearcher : user._id.toString(),
+            timeline : [{order: 0, type:"text", text:"A first jsPsych experiment!"}],
+            _id: "595d9806d5289813e8a62cf8"
           },
+          params:{
+            provider: undefined
+          }
         })
       } 
     }

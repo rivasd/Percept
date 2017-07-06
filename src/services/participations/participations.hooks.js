@@ -24,9 +24,11 @@ module.exports = {
       validateSchema(participationUpdateSchema, Ajv)
     ],
     patch: [
+      function(hook){
+        var test = "this";
+      },
       disableMultiItemChange(),
-      restrictToOwner({ownerField:'subjectId'}),
-      disallow('external')
+      restrictToOwner({ownerField:'subjectId'})
     ],
     remove: [disallow('external')]
   },

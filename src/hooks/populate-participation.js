@@ -2,6 +2,8 @@
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
 const populate = require("feathers-hooks-common").populate;
+const iff = require("feathers-hooks-common").iff;
+const isProvider = require("feathers-hooks-common").isProvider;
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
@@ -21,5 +23,5 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   }
 
 
-  return populate(populatePartSchema);
+  return iff(isProvider('external'),populate(populatePartSchema));
 };

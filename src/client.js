@@ -20,6 +20,6 @@ $(function(){
 
     var percept = new Percept({app:app});
 
-    percept.doExperiment({label:'secondexp'});
+    percept.doExperiment({label:'testexp'});
 
 });
